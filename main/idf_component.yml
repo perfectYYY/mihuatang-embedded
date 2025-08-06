@@ -1,0 +1,5 @@
+dependencies:
+  espressif/led_strip: ^2.4.1
+  zorxx/dht: ^1.0.1
+  espressif/ds18b20: ^0.1.2
+  espressif/onewire_bus: ^1.0.4

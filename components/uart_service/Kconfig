@@ -1,0 +1,28 @@
+menu "UART Service Configuration"  
+
+    config UART_SERVICE_PORT_NUM  
+        int "UART Port Number"  
+        range 0 2  
+        default 1  
+        help  
+            Select the UART port number to be used by the service.  
+
+    config UART_SERVICE_BAUD_RATE  
+        int "UART Baud Rate"  
+        default 115200  
+        help  
+            Specify the baud rate for the UART communication.  
+
+    config UART_SERVICE_TX_PIN  
+        int "UART TX Pin"  
+        default 17  
+        help  
+            GPIO pin number for UART TX.  
+
+    config UART_SERVICE_RX_PIN  
+        int "UART RX Pin"  
+        default 18  
+        help  
+            GPIO pin number for UART RX.  
+
+endmenu  
