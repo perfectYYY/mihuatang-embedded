@@ -6,12 +6,9 @@
 #include "esp_err.h"
 #include <stddef.h>
 
-// 定义一个通用的回调函数指针类型
 typedef void (*uart_service_handler_t)(const char *data, size_t len);
 
-/**
- * @brief 初始化UART服务，安装驱动并启动后台任务。
- */
+
 esp_err_t uart_service_init(void);
 
 /**

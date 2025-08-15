@@ -20,9 +20,9 @@ static const char *TAG = "UART_SERVICE";
 static uart_service_handler_t s_command_handler = NULL; 
 static uart_service_handler_t s_status_handler = NULL;  
 static const char* STATUS_PREFIX = "STATUS:";
-static size_t STATUS_PREFIX_LEN = 7; // "STATUS:"的长度
+static size_t STATUS_PREFIX_LEN = 7; 
 
-// 后台任务，用于接收和处理 UART 数据  
+//接收和处理 UART 数据  
 static void uart_service_task(void *pvParameters)  
 {  
     uint8_t* data = (uint8_t*) malloc(UART_BUF_SIZE);  

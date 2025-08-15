@@ -2195,6 +2195,15 @@ CONFIG_WIFI_PROV_STA_ALL_CHANNEL_SCAN=y
 # end of Wi-Fi Provisioning Manager
 
 #
+# Compressor Control Configuration
+#
+CONFIG_COMPRESSOR_UART_PORT_NUM=2
+CONFIG_COMPRESSOR_BAUD_RATE=9600
+CONFIG_COMPRESSOR_TX_PIN=20
+CONFIG_COMPRESSOR_RX_PIN=21
+# end of Compressor Control Configuration
+
+#
 # UART Service Configuration
 #
 CONFIG_UART_SERVICE_PORT_NUM=1

@@ -1,0 +1,28 @@
+menu "Compressor Control Configuration"
+
+    config COMPRESSOR_UART_PORT_NUM
+        int "Compressor UART Port Number"
+        range 0 2
+        default 2
+        help
+            UART port for the compressor.
+
+    config COMPRESSOR_BAUD_RATE
+        int "Compressor UART Baud Rate"
+        default 9600
+        help
+            Specify the baud rate for the compressor's UART communication.
+
+    config COMPRESSOR_TX_PIN
+        int "Compressor UART TX Pin"
+        default 19
+        help
+            TX pin for the compressor's UART.
+
+    config COMPRESSOR_RX_PIN
+        int "Compressor UART RX Pin"
+        default 20
+        help
+            RX pin for the compressor's UART.
+
+endmenu
