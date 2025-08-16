@@ -6,7 +6,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/semphr.h" // 添加互斥锁头文件
+#include "freertos/semphr.h" 
 
 #include "command_dispatcher.h"
 #include "sdkconfig.h"
@@ -126,7 +126,7 @@ esp_err_t compressor_module_init(void)
         return ret;
     }
 
-    // 3. 创建后台通讯任务
+    //后台通讯任务
     if (xTaskCreate(compressor_comm_task, "comp_comm_task", COMM_TASK_STACK_SIZE, NULL, 5, &s_comm_task_handle) != pdPASS) {
         ESP_LOGE(TAG, "创建通讯任务失败!");
         uart_driver_delete(COMPRESSOR_UART_PORT);
@@ -139,9 +139,8 @@ esp_err_t compressor_module_init(void)
     return ESP_OK;
 }
 
-/**
- * @brief 反初始化压缩机控制模块
- */
+//反初始化压缩机控制模块
+
 esp_err_t compressor_module_deinit(void)
 {
     if (!s_is_initialized) {
@@ -155,7 +154,7 @@ esp_err_t compressor_module_deinit(void)
     vSemaphoreDelete(s_target_status_mutex);
     s_is_initialized = false;
     ESP_LOGI(TAG, "压缩机模块已反初始化。");
-    return ESP_OK;
+    return ESP_OK; 
 }
 
 static void compressor_comm_task(void *pvParameters)
@@ -191,7 +190,7 @@ static void compressor_comm_task(void *pvParameters)
             } else {
                 uint8_t frame_stop[] = {COMPRESSOR_SLAVE_ADDRESS, 0x06, 0x20, 0x01, 0x00, 0x02};
                 send_modbus_frame(frame_stop, sizeof(frame_stop));
-            }
+            } 
             last_run_state = current_run_command;
             last_speed = current_target_speed_rpm;
             vTaskDelay(pdMS_TO_TICKS(100)); 

@@ -1,5 +1,4 @@
-// components/water_level_sensor_module/src/water_level_sensor_module.c
-
+#include <string.h>
 #include "water_level_sensor_module.h"
 #include "esp_log.h"
 #include "esp_adc/adc_oneshot.h"
@@ -10,7 +9,7 @@
 #include "uart_service.h"
 
 // --- ADC配置 ---
-#define ADC_CHANNEL         ADC_CHANNEL_0   // GPIO1 对应 ADC1_CHANNEL_0
+#define ADC_CHANNEL         ADC_CHANNEL_0   
 #define ADC_ATTEN           ADC_ATTEN_DB_12 // 衰减设置为12dB，测量范围约为 0-3.1V
 #define LEVEL_THRESHOLD_MV  1500            // 水位阈值，1500mV = 1.5V
 
@@ -21,7 +20,6 @@ static bool s_is_initialized = false;
 static adc_oneshot_unit_handle_t s_adc_handle;
 static adc_cali_handle_t s_adc_cali_handle = NULL;
 
-// --- 函数声明 ---
 void command_handler(const char *command, size_t len);
 static bool adc_calibration_init(adc_unit_t unit, adc_atten_t atten, adc_cali_handle_t *out_handle);
 
@@ -36,13 +34,13 @@ esp_err_t water_level_sensor_module_init(void) {
     // 1. 初始化ADC单元
     adc_oneshot_unit_init_cfg_t init_config = {
         .unit_id = ADC_UNIT_1,
-        .ulp_mode = ADC_ULP_MODE_DISABLE,
+        .ulp_mode = ADC_ULP_MODE_DISABLE, 
     };
     ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config, &s_adc_handle));
 
     // 2. 配置ADC通道
     adc_oneshot_chan_cfg_t config = {
-        .bitwidth = ADC_BITWIDTH_DEFAULT,
+        .bitwidth = ADC_BITWIDTH_DEFAULT,  
         .atten = ADC_ATTEN,
     };
     ESP_ERROR_CHECK(adc_oneshot_config_channel(s_adc_handle, ADC_CHANNEL, &config));
@@ -77,8 +75,7 @@ static int get_voltage_mv() {
     if (s_adc_cali_handle) {
         ESP_ERROR_CHECK(adc_cali_raw_to_voltage(s_adc_cali_handle, adc_raw, &voltage_mv));
     } else {
-        // 如果没有校准数据，只能做一个粗略估算 (不推荐)
-        voltage_mv = adc_raw * 3100 / 4095; // 假设3.1V满量程，12bit精度
+        voltage_mv = adc_raw * 3100 / 4095; 
     }
     return voltage_mv;
 }
@@ -127,7 +124,7 @@ static bool adc_calibration_init(adc_unit_t unit, adc_atten_t atten, adc_cali_ha
     esp_err_t ret = ESP_FAIL;
     bool calibrated = false;
 
-    adc_cali_curve_fitting_config_t cali_config = {
+    adc_cali_curve_fitting_config_t cali_config = { 
         .unit_id = unit,
         .atten = atten,
         .bitwidth = ADC_BITWIDTH_DEFAULT,
