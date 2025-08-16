@@ -129,14 +129,14 @@ esp_err_t dc_motor_module_init(void)
     // 4. 注册命令
     ret = command_dispatcher_register("motor", motor_command_handler);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "注册 'motor' 命令失败!");
+        ESP_LOGE(TAG, "注册 'motor' 命令失败");
         return ret;
     }
 
     // 5. 设置初始状态
     motor_stop_action();
     s_is_initialized = true;
-    ESP_LOGI(TAG, "直流电机模块初始化完成。");
+    ESP_LOGI(TAG, "直流电机模块初始化完成");
     return ESP_OK;
 }
 

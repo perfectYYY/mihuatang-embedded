@@ -48,6 +48,7 @@ WiFi断开原因码对照表：
 #include "ds18b20_manager.h" 
 #include "water_level_sensor_module.h"
 #include "function_controller.h"
+#include "compressor_control.h"
 
 #define DEVICE_NAME      "衣物护理机CareProP1"
 #define DEVICE_TYPE      "CareProP1"
@@ -314,8 +315,8 @@ void app_main(void)
     uart_service_register_command_handler(handle_uart_message);
     ESP_ERROR_CHECK(led_controller_init());
     ESP_ERROR_CHECK(fan_controller_init());
-    ESP_ERROR_CHECK(dht22_sensor_init());
-    ESP_ERROR_CHECK(ds18b20_manager_init());
+    //ESP_ERROR_CHECK(dht22_sensor_init());
+    //ESP_ERROR_CHECK(ds18b20_manager_init());
     ESP_ERROR_CHECK(dc_motor_module_init());
     ESP_ERROR_CHECK(relay_module_init());
     ESP_ERROR_CHECK(relay_module_two_init()); 
@@ -323,16 +324,15 @@ void app_main(void)
     ESP_ERROR_CHECK(stepper_motor_module_init());
     ESP_ERROR_CHECK(water_level_sensor_module_init());
     ESP_ERROR_CHECK(function_controller_init());
+    ESP_ERROR_CHECK(compressor_module_init());
     ESP_LOGI(TAG, "Local services are running.");
 
     get_device_sn();
     ESP_LOGI(TAG, "设备SN: %s", device_sn);
 
     
-    // 取消注释以启用WiFi和MQTT
     // wifi_init_sta();
 
-    // 取消注释以启用日志上传任务
     // xTaskCreate(log_task, "log_task", 4096, NULL, 5, NULL);
 
     while (1) {

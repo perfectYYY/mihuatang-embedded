@@ -74,7 +74,7 @@ void valve_command_handler(const char *command, size_t len)
 {
     if (!s_is_initialized) return;
 
-    const char *sub_command = command + strlen(VALVE_COMMAND_PREFIX) + 1; // +1 跳过 ':'
+    const char *sub_command = command + strlen(VALVE_COMMAND_PREFIX) + 1; 
 
     if (strncmp(sub_command, "open", strlen("open")) == 0) {
         valve_set_state_action(true);
@@ -83,7 +83,6 @@ void valve_command_handler(const char *command, size_t len)
         valve_set_state_action(false);
     }
     else if (strncmp(sub_command, "status", strlen("status")) == 0) {
-        // 状态在每次动作后自动发送，这里无需额外操作
     }
     else {
         ESP_LOGW(TAG, "未知的电磁阀子命令: %s", sub_command);

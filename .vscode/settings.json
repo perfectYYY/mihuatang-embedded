@@ -3,7 +3,8 @@
   "idf.espIdfPathWin": "c:\\Users\\qi.guo\\esp\\v5.4.1\\esp-idf",
   "idf.pythonInstallPath": "/opt/anaconda3/bin/python",
   "idf.openOcdConfigs": [
-    "board/esp32s3-builtin.cfg"
+    "interface/ftdi/esp_ftdi.cfg",
+    "target/esp32s2.cfg"
   ],
   "idf.portWin": "COM4",
   "idf.toolsPathWin": "C:\\Users\\qi.guo\\.espressif",
@@ -37,10 +38,11 @@
     "string": "cpp",
     "string_view": "cpp",
     "vector": "cpp",
-    "command_dispatcher.h": "c"
+    "command_dispatcher.h": "c",
+    "stdlib.h": "c"
   },
   "idf.flashType": "UART",
-  "idf.port": "/dev/tty.wchusbserial595B0697591",
+  "idf.port": "/dev/tty.wchusbserial5A840144951",
   "idf.espIdfPath": "/Users/code/esp/esp-idf",
   "idf.toolsPath": "/Users/code/.espressif"
 }

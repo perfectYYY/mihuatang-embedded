@@ -24,7 +24,6 @@ void fan_command_handler(const char *command, size_t len);
 esp_err_t fan_controller_init(void) {  
     ESP_LOGI(TAG, "正在初始化风扇PWM硬件 (使用Timer: %d, Channel: %d)...", FAN_LEDC_TIMER, FAN_LEDC_CHANNEL);  
 
-    // 1. 配置 LEDC 定时器 
     ledc_timer_config_t ledc_timer = {  
         .speed_mode       = FAN_LEDC_MODE,  
         .timer_num        = FAN_LEDC_TIMER, 
@@ -34,7 +33,6 @@ esp_err_t fan_controller_init(void) {
     };  
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));  
 
-    // 2. 配置 LEDC 通道 
     ledc_channel_config_t ledc_channel = {  
         .speed_mode     = FAN_LEDC_MODE,  
         .channel        = FAN_LEDC_CHANNEL, 
@@ -47,7 +45,6 @@ esp_err_t fan_controller_init(void) {
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));  
     ESP_LOGI(TAG, "风扇硬件初始化完成，使用GPIO %d", FAN_PWM_PIN);  
 
-    // 3. 向命令分发中心注册 "fan" 命令  
     ESP_LOGI(TAG, "正在向命令分发中心注册 'fan' 命令...");  
     esp_err_t err = command_dispatcher_register("fan", fan_command_handler);  
     if (err != ESP_OK) {  
@@ -58,9 +55,6 @@ esp_err_t fan_controller_init(void) {
     return ESP_OK;  
 }  
 
-/**  
- * @brief 处理所有 "fan:" 前缀的命令  
- */  
 void fan_command_handler(const char *command, size_t len)  
 {  
     ESP_LOGI(TAG, "收到分发中心转发来的风扇命令: %.*s", len, command);  
@@ -76,11 +70,9 @@ void fan_command_handler(const char *command, size_t len)
 
     ESP_LOGI(TAG, "执行风扇调速操作，速度设置为: %d%%", speed_percentage);  
 
-    // PWM占空比计算 (基于10-bit分辨率)  
     uint32_t max_duty = (1 << FAN_LEDC_RESOLUTION) - 1;  
     uint32_t duty = (speed_percentage * max_duty) / 100;  
 
-    // 设置PWM占空比并更新 (作用于独立的通道)  
     ESP_ERROR_CHECK(ledc_set_duty(FAN_LEDC_MODE, FAN_LEDC_CHANNEL, duty));  
     ESP_ERROR_CHECK(ledc_update_duty(FAN_LEDC_MODE, FAN_LEDC_CHANNEL));  
  
