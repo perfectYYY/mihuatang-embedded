@@ -20,6 +20,7 @@ extern "C" {
  * @return esp_err_t 
  */
 esp_err_t water_level_sensor_module_init(void);
+int get_water_level(void);
 
 /**
  * @brief 直接获取当前水位状态 (ADC版本)
@@ -27,14 +28,14 @@ esp_err_t water_level_sensor_module_init(void);
  * @return true 水位已到达
  * @return false 水位未到达
  */
-bool water_level_is_reached(void);
+// bool water_level_is_reached(void);
 
 /**
  * @brief 直接获取当前检测到的电压值
  * 
  * @return float 检测到的电压值(V)
  */
-float water_level_get_voltage(void);
+// float water_level_get_voltage(void);
 
 #ifdef __cplusplus
 }
