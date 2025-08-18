@@ -49,6 +49,7 @@ WiFi断开原因码对照表：
 #include "water_level_sensor_module.h"
 #include "function_controller.h"
 #include "compressor_control.h"
+#include "shake_motor_module.h"
 
 #define DEVICE_NAME      "衣物护理机CareProP1"
 #define DEVICE_TYPE      "CareProP1"
@@ -325,6 +326,7 @@ void app_main(void)
     ESP_ERROR_CHECK(water_level_sensor_module_init());
     ESP_ERROR_CHECK(function_controller_init());
     ESP_ERROR_CHECK(compressor_module_init());
+    ESP_ERROR_CHECK(shake_motor_module_init());
     ESP_LOGI(TAG, "Local services are running.");
 
     get_device_sn();

@@ -35,9 +35,7 @@ static esp_err_t motor_set_speed(uint8_t speed_percentage);
 static void motor_stop_action(void);
 esp_err_t dc_motor_module_init(void);
 
-/**
- * @brief 命令处理器，处理所有 "motor:" 前缀的命令
- */
+//命令处理器，处理所有 "motor:" 前缀的命令
 void motor_command_handler(const char *command, size_t len)
 {
     if (!s_is_initialized) {
