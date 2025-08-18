@@ -2,6 +2,7 @@
 #define STEAM_VALVE_MODULE_H
 
 #include "esp_err.h"
+#include "stdbool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,6 +20,7 @@ extern "C" {
  *      - ESP_FAIL: 初始化失败
  */
 esp_err_t steam_valve_module_init(void);
+void set_steam_valve(bool is_open);
 
 
 #ifdef __cplusplus

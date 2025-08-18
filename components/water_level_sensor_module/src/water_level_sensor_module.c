@@ -54,10 +54,10 @@ int get_water_level() {
     }
     int level = gpio_get_level(GPIO_NUM_1);
     if (level == 1) {
-        ESP_LOGI(TAG, "GPIO5 为高电平");
+        // ESP_LOGI(TAG, "GPIO1 为高电平");
         return 1;
     } else {
-        ESP_LOGI(TAG, "GPIO5 为低电平");
+        // ESP_LOGI(TAG, "GPIO1 为低电平");
         return 0;
     }
 }

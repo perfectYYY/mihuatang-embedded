@@ -307,16 +307,28 @@ static void s_data_upload_task(void *pvParameters)
     char command_buffer[32];
     char status_str[128];
     while (1) {
-        water_level = get_water_level();
-        if (water_level == 0) {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_OFF");
-        } else if (water_level == 1) {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ON");
-        } else {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ERROR");
-        }
-        uart_service_send_line(status_str);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        // water_level = get_water_level();
+        // if (water_level == 0) {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_OFF");
+        // } else if (water_level == 1) {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_ON");
+        // } else {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_ERROR");
+        // }
+        // uart_service_send_line(status_str);
+        // vTaskDelay(pdMS_TO_TICKS(100));
+        // relay_set_state_steam(1);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // relay_set_state_steam(0);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_motor(MOTOR_DIR_FORWARD, 100);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_motor(MOTOR_DIR_REVERSE, 100);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_valve(true);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_valve(false);
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
@@ -356,7 +368,7 @@ void app_main(void)
         5, 
         &s_data_upload_task_handle) != pdPASS) {
     ESP_LOGE(TAG, "数据上传任务创建失败！");
-}
+    }
     
     // wifi_init_sta();
 

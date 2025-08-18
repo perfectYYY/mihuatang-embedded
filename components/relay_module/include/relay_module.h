@@ -19,6 +19,8 @@ extern "C" {
  *      - ESP_FAIL: 初始化失败  
  */  
 esp_err_t relay_module_init(void);  
+void relay_set_state_steam(int8_t state);  
+
 
 
 #ifdef __cplusplus  

@@ -124,3 +124,14 @@ static void send_status_update(void)
         uart_service_send_line("STATUS:VALVE_CLOSED");
     }
 }
+
+//feng
+void set_steam_valve(bool is_open)
+{
+    if (!s_is_initialized) {
+        ESP_LOGE(TAG, "模块未初始化，无法设置电磁阀状态");
+        return;
+    }
+    valve_set_state_action(is_open);
+    send_status_update();
+}
