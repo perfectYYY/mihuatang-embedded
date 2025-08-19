@@ -1,48 +1,7 @@
 {
-  "C_Cpp.intelliSenseEngine": "default",
-  "idf.espIdfPathWin": "c:\\Users\\qi.guo\\esp\\v5.4.1\\esp-idf",
-  "idf.pythonInstallPath": "/opt/anaconda3/bin/python",
-  "idf.openOcdConfigs": [
-    "interface/ftdi/esp_ftdi.cfg",
-    "target/esp32s2.cfg"
-  ],
-  "idf.portWin": "COM4",
-  "idf.toolsPathWin": "C:\\Users\\qi.guo\\.espressif",
-  "idf.customExtraVars": {
-    "IDF_TARGET": "esp32s3"
-  },
-  "clangd.path": "C:\\Users\\qi.guo\\.espressif\\tools\\esp-clang\\esp-18.1.2_20240912\\esp-clang\\bin\\clangd.exe",
-  "clangd.arguments": [
-    "--background-index",
-    "--query-driver=C:\\Users\\qi.guo\\.espressif\\tools\\xtensa-esp-elf\\esp-14.2.0_20241119\\xtensa-esp-elf\\bin\\xtensa-esp32-elf-gcc.exe",
-    "--compile-commands-dir=${workspaceFolder}\\build"
-  ],
-  "files.associations": {
-    "esp_chip_info.h": "c",
-    "gpio.h": "c",
-    "esp_log.h": "c",
-    "sdkconfig.h": "c",
-    "mqtt_client.h": "c",
-    "cjson.h": "c",
-    "led_strip.h": "c",
-    "stdio.h": "c",
-    "stdint.h": "c",
-    "task.h": "c",
-    "freertos.h": "c",
-    "format": "cpp",
-    "queue": "c",
-    "stack": "c",
-    "random": "c",
-    "array": "cpp",
-    "span": "cpp",
-    "string": "cpp",
-    "string_view": "cpp",
-    "vector": "cpp",
-    "command_dispatcher.h": "c",
-    "stdlib.h": "c"
-  },
-  "idf.flashType": "UART",
-  "idf.port": "/dev/tty.wchusbserial5A840144951",
-  "idf.espIdfPath": "/Users/code/esp/esp-idf",
-  "idf.toolsPath": "/Users/code/.espressif"
+    "idf.espIdfPathWin": "D:/Espressif/frameworks/esp-idf-v5.3.3/",
+    "idf.toolsPathWin": "D:\\Espressif",
+    "idf.pythonInstallPath": "D:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.flashType": "UART",
+    "idf.portWin": "COM11"
 }
