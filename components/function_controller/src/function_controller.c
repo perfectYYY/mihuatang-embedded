@@ -24,7 +24,7 @@ extern void relay_two_command_handler(const char *command, size_t len);
 extern void motor_command_handler(const char *command, size_t len);
 extern void valve_command_handler(const char *command, size_t len);
 
-extern bool water_level_is_reached(void); // 直接获取水位状态
+// extern bool water_level_is_reached(void); // 直接获取水位状态
 
 // --- 本模块的功能函数声明 ---
 static void function_command_handler(const char *command, size_t len);
@@ -164,47 +164,47 @@ static void steam_level_monitor_task(void *pvParameters) {
 
     // 任务主循环
     for (;;) {
-        bool level_reached = water_level_is_reached();
+        // bool level_reached = water_level_is_reached();
 
-        if (level_reached) {
-            // --- 水位已满 ---
-            if (!is_heating) {
-                ESP_LOGI(TAG, "水位已达到，停止加水并开始加热。");
+        // if (level_reached) {
+        //     // --- 水位已满 ---
+        //     if (!is_heating) {
+        //         ESP_LOGI(TAG, "水位已达到，停止加水并开始加热。");
 
-                // 1. 停止加水
-                snprintf(command_buffer, sizeof(command_buffer), "motor:stop");
-                motor_command_handler(command_buffer, strlen(command_buffer));
-                snprintf(command_buffer, sizeof(command_buffer), "valve:close");
-                valve_command_handler(command_buffer, strlen(command_buffer));
+        //         // 1. 停止加水
+        //         snprintf(command_buffer, sizeof(command_buffer), "motor:stop");
+        //         motor_command_handler(command_buffer, strlen(command_buffer));
+        //         snprintf(command_buffer, sizeof(command_buffer), "valve:close");
+        //         valve_command_handler(command_buffer, strlen(command_buffer));
 
-                // 2. 开始加热
-                snprintf(command_buffer, sizeof(command_buffer), "relay2:on");
-                relay_two_command_handler(command_buffer, strlen(command_buffer));
+        //         // 2. 开始加热
+        //         snprintf(command_buffer, sizeof(command_buffer), "relay2:on");
+        //         relay_two_command_handler(command_buffer, strlen(command_buffer));
                 
-                is_heating = true; // 更新状态
-                uart_service_send_line("STATUS:STEAM_HEATING_ON");
-            }
-        } else {
-            // --- 水位不足 ---
-            if (is_heating) {
-                ESP_LOGI(TAG, "水位过低，停止加热并开始加水。");
+        //         is_heating = true; // 更新状态
+        //         uart_service_send_line("STATUS:STEAM_HEATING_ON");
+        //     }
+        // } else {
+        //     // --- 水位不足 ---
+        //     if (is_heating) {
+        //         ESP_LOGI(TAG, "水位过低，停止加热并开始加水。");
 
-                // 1. 停止加热
-                snprintf(command_buffer, sizeof(command_buffer), "relay2:off");
-                relay_two_command_handler(command_buffer, strlen(command_buffer));
+        //         // 1. 停止加热
+        //         snprintf(command_buffer, sizeof(command_buffer), "relay2:off");
+        //         relay_two_command_handler(command_buffer, strlen(command_buffer));
 
-                is_heating = false; // 更新状态
-                uart_service_send_line("STATUS:STEAM_HEATING_OFF");
-            }
+        //         is_heating = false; // 更新状态
+        //         uart_service_send_line("STATUS:STEAM_HEATING_OFF");
+        //     }
             
-            // 2. 开始加水 (持续指令，即使之前已经发过)
-            snprintf(command_buffer, sizeof(command_buffer), "motor:speed:100");
-            motor_command_handler(command_buffer, strlen(command_buffer));
-            snprintf(command_buffer, sizeof(command_buffer), "motor:forward");
-            motor_command_handler(command_buffer, strlen(command_buffer));
-            snprintf(command_buffer, sizeof(command_buffer), "valve:open");
-            valve_command_handler(command_buffer, strlen(command_buffer));
-        }
+        //     // 2. 开始加水 (持续指令，即使之前已经发过)
+        //     snprintf(command_buffer, sizeof(command_buffer), "motor:speed:100");
+        //     motor_command_handler(command_buffer, strlen(command_buffer));
+        //     snprintf(command_buffer, sizeof(command_buffer), "motor:forward");
+        //     motor_command_handler(command_buffer, strlen(command_buffer));
+        //     snprintf(command_buffer, sizeof(command_buffer), "valve:open");
+        //     valve_command_handler(command_buffer, strlen(command_buffer));
+        // }
 
         // 延时，避免过于频繁地检查，给系统其他任务运行的机会
         vTaskDelay(pdMS_TO_TICKS(WATER_LEVEL_CHECK_INTERVAL_MS));

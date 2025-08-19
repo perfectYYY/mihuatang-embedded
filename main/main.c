@@ -62,6 +62,7 @@ static const char *TAG = "MiHuaTang";
 static esp_mqtt_client_handle_t mqtt_client = NULL;
 static bool mqtt_connected = false;
 static int wifi_reconnect_count = 0;
+static TaskHandle_t s_data_upload_task_handle = NULL;
 char device_sn[32] = {0};
 
 // 函数声明
@@ -300,6 +301,25 @@ static void handle_uart_message(const char *data, size_t len)
     command_dispatcher_forward(data, len);
 }
 
+static void s_data_upload_task(void *pvParameters)
+{
+    int water_level;
+    char command_buffer[32];
+    char status_str[128];
+    while (1) {
+        water_level = get_water_level();
+        if (water_level == 0) {
+            snprintf(status_str, sizeof(status_str), "STATUS:water_level_OFF");
+        } else if (water_level == 1) {
+            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ON");
+        } else {
+            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ERROR");
+        }
+        uart_service_send_line(status_str);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+
 void app_main(void)
 {
     esp_err_t ret = nvs_flash_init();
@@ -315,7 +335,7 @@ void app_main(void)
     uart_service_register_command_handler(handle_uart_message);
     ESP_ERROR_CHECK(led_controller_init());
     ESP_ERROR_CHECK(fan_controller_init());
-    //ESP_ERROR_CHECK(dht22_sensor_init());
+    ESP_ERROR_CHECK(dht22_sensor_init());
     //ESP_ERROR_CHECK(ds18b20_manager_init());
     ESP_ERROR_CHECK(dc_motor_module_init());
     ESP_ERROR_CHECK(relay_module_init());
@@ -329,11 +349,19 @@ void app_main(void)
 
     get_device_sn();
     ESP_LOGI(TAG, "设备SN: %s", device_sn);
-
+    if (xTaskCreate(s_data_upload_task, 
+        "data_upload_task", 
+        4096,
+        NULL, 
+        5, 
+        &s_data_upload_task_handle) != pdPASS) {
+    ESP_LOGE(TAG, "数据上传任务创建失败！");
+}
     
     // wifi_init_sta();
 
-    // xTaskCreate(log_task, "log_task", 4096, NULL, 5, NULL);
+    // 取消注释以启用日志上传任务
+    xTaskCreate(log_task, "log_task", 4096, NULL, 5, NULL);
 
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000));
