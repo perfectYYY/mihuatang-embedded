@@ -20,7 +20,6 @@ static TaskHandle_t s_steam_monitor_task_handle = NULL;
 extern void relay_command_handler(const char *command, size_t len);
 extern void fan_command_handler(const char *command, size_t len);
 extern void stepper_command_handler(const char *command, size_t len);
-extern void relay_two_command_handler(const char *command, size_t len);
 extern void motor_command_handler(const char *command, size_t len);
 extern void valve_command_handler(const char *command, size_t len);
 
@@ -129,10 +128,6 @@ static void stop_steam_wrinkle_function(void) {
     ESP_LOGI(TAG, "===== 正在停止蒸汽除皱功能 =====");
     char command_buffer[32];
 
-    // 步骤 1: 确保加热器关闭
-    ESP_LOGI(TAG, "步骤: 关闭加热器 (relay2)...");
-    snprintf(command_buffer, sizeof(command_buffer), "relay2:off");
-    relay_two_command_handler(command_buffer, strlen(command_buffer));
     
     // 步骤 2: 确保水泵停止
     ESP_LOGI(TAG, "步骤: 关闭蒸汽泵电机...");
@@ -176,10 +171,6 @@ static void steam_level_monitor_task(void *pvParameters) {
                 motor_command_handler(command_buffer, strlen(command_buffer));
                 snprintf(command_buffer, sizeof(command_buffer), "valve:close");
                 valve_command_handler(command_buffer, strlen(command_buffer));
-
-                // 2. 开始加热
-                snprintf(command_buffer, sizeof(command_buffer), "relay2:on");
-                relay_two_command_handler(command_buffer, strlen(command_buffer));
                 
                 is_heating = true; // 更新状态
                 uart_service_send_line("STATUS:STEAM_HEATING_ON");
@@ -189,9 +180,6 @@ static void steam_level_monitor_task(void *pvParameters) {
             if (is_heating) {
                 ESP_LOGI(TAG, "水位过低，停止加热并开始加水。");
 
-                // 1. 停止加热
-                snprintf(command_buffer, sizeof(command_buffer), "relay2:off");
-                relay_two_command_handler(command_buffer, strlen(command_buffer));
 
                 is_heating = false; // 更新状态
                 uart_service_send_line("STATUS:STEAM_HEATING_OFF");

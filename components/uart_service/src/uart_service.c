@@ -53,6 +53,7 @@ static void uart_service_task(void *pvParameters)
                 }
             }
         }  
+        vTaskDelay(pdMS_TO_TICKS(1));  // 避免任务过于频繁执行
     }  
     free(data);  
     vTaskDelete(NULL);  

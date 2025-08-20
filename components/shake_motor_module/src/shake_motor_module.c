@@ -5,6 +5,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"  
 #include <string.h>  
+#include <stdatomic.h> 
 
 #include "command_dispatcher.h"  
 #include "uart_service.h"  
@@ -17,6 +18,12 @@
 #define SHAKE_MOTOR_LEDC_SPEED_MODE   LEDC_LOW_SPEED_MODE
 #define SHAKE_MOTOR_LEDC_TIMER        LEDC_TIMER_1
 #define SHAKE_MOTOR_LEDC_CHANNEL      LEDC_CHANNEL_1
+#define ENCODER_A 37
+#define ENCODER_B 8
+
+
+atomic_long encoder_pos = 0;
+
 
 // --- 模块内部状态 ---  
 static const char *TAG = "SHAKE_MOTOR_MODULE";
@@ -29,6 +36,14 @@ void shake_motor_command_handler(const char *command, size_t len);
 static esp_err_t shake_motor_set(bool enable);
 static esp_err_t shake_motor_set_speed(uint8_t speed_percentage);
 
+
+static void IRAM_ATTR encoder_isr_handler(void* arg) {
+    if (gpio_get_level(ENCODER_A) == gpio_get_level(ENCODER_B)) {
+        atomic_fetch_add(&encoder_pos, 1);
+    } else {
+        atomic_fetch_sub(&encoder_pos, 1);
+    }
+}
 
 esp_err_t shake_motor_module_init(void){
     if (s_is_initialized) {
@@ -62,10 +77,27 @@ esp_err_t shake_motor_module_init(void){
     };
     ledc_channel_config(&ledc_channel);
 
+    //gpio_config_t encoder_io_conf = {
+        //.pin_bit_mask = (1ULL << ENCODER_A) | (1ULL << ENCODER_B),
+        //.mode = GPIO_MODE_INPUT,
+        //.pull_up_en = 1, 
+        //.intr_type = GPIO_INTR_DISABLE // A相任意边沿触发中断
+    //};
+    //gpio_config(&encoder_io_conf);
+
+    //esp_err_t isr_service_err = gpio_install_isr_service(0);
+    //if (isr_service_err == ESP_OK) {
+        //ESP_LOGI(TAG, "中断服务已安装");
+    //}
+    //gpio_isr_handler_add(ENCODER_A, encoder_isr_handler, NULL);
     ESP_ERROR_CHECK(command_dispatcher_register("shake", shake_motor_command_handler));
     s_is_initialized = true;
     ESP_LOGI(TAG, "摆动电机模块初始化完成");
     return ESP_OK;
+}
+
+long get_position(void) {
+    return atomic_load(&encoder_pos);
 }
 
 void shake_motor_command_handler(const char *command, size_t len) {
@@ -86,6 +118,14 @@ void shake_motor_command_handler(const char *command, size_t len) {
         uint8_t speed = atoi(sub_command + strlen("speed"));
         shake_motor_set_speed(speed);
         ESP_LOGI(TAG, "摆动电机速度已设置为: %d%%", speed);
+    } else if (strncmp(sub_command, "get_encoder", strlen("get_encoder")) == 0) {
+        //long position = get_position();
+        //char position_buffer[40];
+        //snprintf(position_buffer, sizeof(position_buffer), "STATUS:ENCODER:%ld", position);
+        //ESP_LOGI(TAG, "摆动电机当前位置: %ld", position);
+        int a = gpio_get_level(ENCODER_A);
+        int b = gpio_get_level(ENCODER_B);
+        ESP_LOGI(TAG, "编码器变化: A=%d, B=%d", a, b);
     } else {
         ESP_LOGW(TAG, "未知命令: %.*s", len, command);
     }
@@ -119,3 +159,5 @@ static esp_err_t shake_motor_set_speed(uint8_t speed_percentage) {
     s_current_speed = speed_percentage;
     return ESP_OK;
 }
+
+

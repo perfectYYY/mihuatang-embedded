@@ -42,7 +42,7 @@
     "stdlib.h": "c"
   },
   "idf.flashType": "UART",
-  "idf.port": "/dev/tty.wchusbserial5A840144951",
+  "idf.port": "/dev/tty.wchusbserial5AB90077151",
   "idf.espIdfPath": "/Users/code/esp/esp-idf",
   "idf.toolsPath": "/Users/code/.espressif"
 }
