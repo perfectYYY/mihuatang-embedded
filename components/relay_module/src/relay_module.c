@@ -80,10 +80,12 @@ void relay_command_handler(const char *command, size_t len)
     const char *sub_command = command + strlen(RELAY_COMMAND_PREFIX) + 1; // +1 跳过 ':'  
 
     if (strncmp(sub_command, "on", strlen("on")) == 0) {  
-        relay_set_state_action(true);  
+        relay_set_state_action(true);
+        ESP_LOGI(TAG, "执行继电器开操作");  
     }   
     else if (strncmp(sub_command, "off", strlen("off")) == 0) {  
         relay_set_state_action(false);  
+        ESP_LOGI(TAG, "执行继电器关操作");  
     }  
     else if (strncmp(sub_command, "toggle", strlen("toggle")) == 0) {  
         relay_set_state_action(!s_current_state);  
@@ -131,4 +133,19 @@ static void send_status_update(void)
     } else {  
         uart_service_send_line("STATUS:RELAY_OFF");  
     }  
+}  
+
+//feng
+void relay_set_state_steam(int8_t state)  
+{  
+    if (!s_is_initialized) {  
+        ESP_LOGE(TAG, "模块未初始化，无法设置状态");  
+        return;  
+    }
+    gpio_set_level(RELAY_GPIO_NUM, state ? 1 : 0);  
+    s_current_state = state;  
+    
+    uint8_t gpio_level = (state == RELAY_ACTIVE_LEVEL);  
+    ESP_LOGI(TAG, "设置继电器状态 -> %s. (GPIO%d 输出电平: %d)",   
+             state ? "ON" : "OFF", RELAY_GPIO_NUM, gpio_level);  
 }  
