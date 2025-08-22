@@ -7,7 +7,7 @@
 static const char *TAG = "CMD_DISPATCHER";  
 
 
-#define MAX_COMMAND_HANDLERS 20  
+#define MAX_COMMAND_HANDLERS 30  
 
 // 这是命令注册表的核心结构  
 typedef struct {  

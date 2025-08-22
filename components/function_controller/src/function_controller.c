@@ -20,7 +20,6 @@ static TaskHandle_t s_steam_monitor_task_handle = NULL;
 extern void relay_command_handler(const char *command, size_t len);
 extern void fan_command_handler(const char *command, size_t len);
 extern void stepper_command_handler(const char *command, size_t len);
-extern void relay_two_command_handler(const char *command, size_t len);
 extern void motor_command_handler(const char *command, size_t len);
 extern void valve_command_handler(const char *command, size_t len);
 
@@ -129,10 +128,6 @@ static void stop_steam_wrinkle_function(void) {
     ESP_LOGI(TAG, "===== 正在停止蒸汽除皱功能 =====");
     char command_buffer[32];
 
-    // 步骤 1: 确保加热器关闭
-    ESP_LOGI(TAG, "步骤: 关闭加热器 (relay2)...");
-    snprintf(command_buffer, sizeof(command_buffer), "relay2:off");
-    relay_two_command_handler(command_buffer, strlen(command_buffer));
     
     // 步骤 2: 确保水泵停止
     ESP_LOGI(TAG, "步骤: 关闭蒸汽泵电机...");

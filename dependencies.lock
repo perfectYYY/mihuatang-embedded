@@ -10,6 +10,16 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 0.1.2
+  espressif/esp-modbus:
+    component_hash: a3db3edf2820121f55a91106bd480af26ba18338c764d242d283fc07b2f94832
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 2.1.0
   espressif/led_strip:
     component_hash: 28c6509a727ef74925b372ed404772aeedf11cce10b78c3f69b3c66799095e2d
     dependencies:
@@ -20,6 +30,16 @@ dependencies:
       registry_url: https://components.espressif.com/
       type: service
     version: 2.5.5
+  espressif/mdns:
+    component_hash: 3ec0af5f6bce310512e90f482388d21cc7c0e99668172d2f895356165fc6f7c5
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 1.8.2
   espressif/onewire_bus:
     component_hash: 11729fd9a5de80225177a61e9cd77de91683b8ec300e83710d5327b666dbe884
     dependencies:
@@ -33,7 +53,7 @@ dependencies:
   idf:
     source:
       type: idf
-    version: 5.3.3
+    version: 6.0.0
   zorxx/dht:
     component_hash: 6a5e699b15509d99b90352694e23beb6646855486eb3bafefd1d50058d474e98
     dependencies: []
@@ -43,9 +63,11 @@ dependencies:
     version: 1.0.1
 direct_dependencies:
 - espressif/ds18b20
+- espressif/esp-modbus
 - espressif/led_strip
+- espressif/mdns
 - espressif/onewire_bus
 - zorxx/dht
-manifest_hash: d31455f6b5e12f250fe62c565c8e06890ac45ddd0270823c97f2c1640758f862
+manifest_hash: e6b173bfce0cca3b7a7777ce393b5977f84a99be3eea4845ee384244da05f6d8
 target: esp32s3
 version: 2.0.0

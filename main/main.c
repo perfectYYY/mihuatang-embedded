@@ -36,7 +36,6 @@ WiFi断开原因码对照表：
 #include "esp_timer.h" 
 #include "driver/mcpwm_prelude.h"
 #include "relay_module.h"  
-#include "relay_module_two.h"
 #include "dc_motor_control.h"
 #include "stepper_motor_module.h"  
 #include "steam_valve_module.h"  
@@ -49,6 +48,7 @@ WiFi断开原因码对照表：
 #include "water_level_sensor_module.h"
 #include "function_controller.h"
 #include "compressor_control.h"
+#include "shake_motor_module.h"
 
 #define DEVICE_NAME      "衣物护理机CareProP1"
 #define DEVICE_TYPE      "CareProP1"
@@ -336,15 +336,15 @@ void app_main(void)
     ESP_ERROR_CHECK(led_controller_init());
     ESP_ERROR_CHECK(fan_controller_init());
     ESP_ERROR_CHECK(dht22_sensor_init());
-    //ESP_ERROR_CHECK(ds18b20_manager_init());
+    ESP_ERROR_CHECK(ds18b20_manager_init());
     ESP_ERROR_CHECK(dc_motor_module_init());
     ESP_ERROR_CHECK(relay_module_init());
-    ESP_ERROR_CHECK(relay_module_two_init()); 
     ESP_ERROR_CHECK(steam_valve_module_init());
     ESP_ERROR_CHECK(stepper_motor_module_init());
     ESP_ERROR_CHECK(water_level_sensor_module_init());
-    ESP_ERROR_CHECK(function_controller_init());
+    //ESP_ERROR_CHECK(function_controller_init());
     ESP_ERROR_CHECK(compressor_module_init());
+    ESP_ERROR_CHECK(shake_motor_module_init());
     ESP_LOGI(TAG, "Local services are running.");
 
     get_device_sn();
