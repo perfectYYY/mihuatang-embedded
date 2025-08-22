@@ -21,12 +21,9 @@
 // --- 模块私有状态 ---
 static const char *TAG = "DC_MOTOR_MODULE";
 static bool s_is_initialized = false;
-typedef enum {
-    MOTOR_DIR_STOP = 0,
-    MOTOR_DIR_FORWARD,
-    MOTOR_DIR_REVERSE,
-    MOTOR_DIR_BRAKE
-} motor_direction_t;
+
+
+
 
 // --- 内部函数声明 ---
 void motor_command_handler(const char *command, size_t len);
@@ -129,14 +126,14 @@ esp_err_t dc_motor_module_init(void)
     // 4. 注册命令
     ret = command_dispatcher_register("motor", motor_command_handler);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "注册 'motor' 命令失败!");
+        ESP_LOGE(TAG, "注册 'motor' 命令失败");
         return ret;
     }
 
     // 5. 设置初始状态
     motor_stop_action();
     s_is_initialized = true;
-    ESP_LOGI(TAG, "直流电机模块初始化完成。");
+    ESP_LOGI(TAG, "直流电机模块初始化完成");
     return ESP_OK;
 }
 
@@ -184,4 +181,12 @@ static void motor_stop_action(void)
     motor_set_direction(MOTOR_DIR_STOP);
     motor_set_speed(0);
     ESP_LOGI(TAG, "电机已停止(高阻态)。");
+}
+
+// 设置蒸汽电机的方向和速度
+//feng  0 停止 1 前进 2 后退 3 刹车
+void set_steam_motor(motor_direction_t direction, uint8_t speed)
+{
+    motor_set_direction(direction);
+    motor_set_speed(speed);
 }

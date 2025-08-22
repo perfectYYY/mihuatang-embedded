@@ -1,5 +1,4 @@
-// components/water_level_sensor_module/src/water_level_sensor_module.c
-
+#include <string.h>
 #include "water_level_sensor_module.h"
 #include "esp_log.h"
 #include "esp_adc/adc_oneshot.h"
@@ -51,10 +50,10 @@ int get_water_level() {
     }
     int level = gpio_get_level(water_level_gpio_num);
     if (level == 1) {
-        ESP_LOGI(TAG, "GPIO5 为高电平");
+        // ESP_LOGI(TAG, "GPIO1 为高电平");
         return 1;
     } else {
-        ESP_LOGI(TAG, "GPIO5 为低电平");
+        // ESP_LOGI(TAG, "GPIO1 为低电平");
         return 0;
     }
 }

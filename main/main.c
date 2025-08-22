@@ -48,6 +48,7 @@ WiFi断开原因码对照表：
 #include "ds18b20_manager.h" 
 #include "water_level_sensor_module.h"
 #include "function_controller.h"
+#include "compressor_control.h"
 
 #define DEVICE_NAME      "衣物护理机CareProP1"
 #define DEVICE_TYPE      "CareProP1"
@@ -306,16 +307,28 @@ static void s_data_upload_task(void *pvParameters)
     char command_buffer[32];
     char status_str[128];
     while (1) {
-        water_level = get_water_level();
-        if (water_level == 0) {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_OFF");
-        } else if (water_level == 1) {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ON");
-        } else {
-            snprintf(status_str, sizeof(status_str), "STATUS:water_level_ERROR");
-        }
-        uart_service_send_line(status_str);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        // water_level = get_water_level();
+        // if (water_level == 0) {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_OFF");
+        // } else if (water_level == 1) {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_ON");
+        // } else {
+        //     snprintf(status_str, sizeof(status_str), "STATUS:water_level_ERROR");
+        // }
+        // uart_service_send_line(status_str);
+        // vTaskDelay(pdMS_TO_TICKS(100));
+        // relay_set_state_steam(1);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // relay_set_state_steam(0);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_motor(MOTOR_DIR_FORWARD, 100);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_motor(MOTOR_DIR_REVERSE, 100);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_valve(true);
+        // vTaskDelay(pdMS_TO_TICKS(1000));
+        // set_steam_valve(false);
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
@@ -343,6 +356,7 @@ void app_main(void)
     ESP_ERROR_CHECK(stepper_motor_module_init());
     ESP_ERROR_CHECK(water_level_sensor_module_init());
     ESP_ERROR_CHECK(function_controller_init());
+    ESP_ERROR_CHECK(compressor_module_init());
     ESP_LOGI(TAG, "Local services are running.");
 
     get_device_sn();
@@ -354,9 +368,8 @@ void app_main(void)
         5, 
         &s_data_upload_task_handle) != pdPASS) {
     ESP_LOGE(TAG, "数据上传任务创建失败！");
-}
+    }
     
-    // 取消注释以启用WiFi和MQTT
     // wifi_init_sta();
 
     // 取消注释以启用日志上传任务
