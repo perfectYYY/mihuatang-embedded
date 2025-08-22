@@ -11,10 +11,7 @@
 #include "command_dispatcher.h"
 #include "uart_service.h"
 
-// --- ADC配置 ---
-#define ADC_CHANNEL         ADC_CHANNEL_0   // GPIO1 对应 ADC1_CHANNEL_0
-#define ADC_ATTEN           ADC_ATTEN_DB_12 // 衰减设置为12dB，测量范围约为 0-3.1V
-#define LEVEL_THRESHOLD_MV  1500            // 水位阈值，1500mV = 1.5V
+#define water_level_gpio_num         GPIO_NUM_1   // ADC输入引脚
 
 // --- 模块内部定义 ---
 static const char *TAG = "WATER_LEVEL_ADC";
@@ -33,7 +30,7 @@ esp_err_t water_level_sensor_module_init(void) {
     ESP_LOGI(TAG, "正在初始化ADC水位传感器模块...");
 
     gpio_config_t io_conf = {
-        .pin_bit_mask = (1ULL << GPIO_NUM_1), // 选择 GPIO5
+        .pin_bit_mask = (1ULL << water_level_gpio_num), // 选择 GPIO5
         .mode = GPIO_MODE_INPUT,              // 设置为输入模式
         .pull_up_en = GPIO_PULLUP_DISABLE,    // 不使能上拉
         .pull_down_en = GPIO_PULLDOWN_ENABLE, // 使能下拉
@@ -44,7 +41,6 @@ esp_err_t water_level_sensor_module_init(void) {
     ESP_ERROR_CHECK(command_dispatcher_register(COMMAND_PREFIX, water_level_command_handler));
 
     s_is_initialized = true;
-    ESP_LOGI(TAG, "ADC水位传感器模块初始化完成。阈值: %dmV", LEVEL_THRESHOLD_MV);
     return ESP_OK;
 }
 
@@ -53,7 +49,7 @@ int get_water_level() {
         ESP_LOGE(TAG, "模块未初始化");
         return -1;
     }
-    int level = gpio_get_level(GPIO_NUM_1);
+    int level = gpio_get_level(water_level_gpio_num);
     if (level == 1) {
         ESP_LOGI(TAG, "GPIO5 为高电平");
         return 1;

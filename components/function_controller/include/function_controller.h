@@ -2,7 +2,10 @@
 #define FUNCTION_CONTROLLER_H
 
 #include "esp_err.h"
-
+#include "dc_motor_control.h"
+#include "water_level_sensor_module.h"
+#include "stdbool.h"
+#include "stepper_motor_module.h"
 /**
  * @file function_controller.h
  * @brief 高级功能与业务逻辑控制器

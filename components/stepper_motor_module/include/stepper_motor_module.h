@@ -19,6 +19,13 @@
 #define VALVE_MAX_STEPS 7  // 完全打开所需步数
 #define VALVE_MIN_STEPS 0  // 完全关闭的位置
 
+
+typedef enum {
+    STOP = 0,
+    OPEN = 1,
+    CLOSE = 2, 
+} stepper_motordirection_t;
+
 /**
  * @brief 初始化步进电机阀门模块。
  * 
@@ -36,5 +43,9 @@ esp_err_t stepper_motor_module_init(void);
  * @return int 当前的步数 (范围从 0 到 7)。
  */
 int stepper_motor_get_current_position(void);
+
+void stepper_motor_direction(stepper_motordirection_t direction, int steps);
+
+
 
 #endif // STEPPER_MOTOR_MODULE_H
