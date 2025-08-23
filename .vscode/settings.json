@@ -1,7 +1,7 @@
 {
   "C_Cpp.intelliSenseEngine": "default",
   "idf.espIdfPathWin": "D:\\ESPIDF\\esp\\v5.4.1\\esp-idf",
-  "idf.pythonInstallPath": "D:\\ESPIDF\\tools\\idf-python\\3.11.2\\python.exe",
+  "idf.pythonInstallPath": "/opt/anaconda3/bin/python",
   "idf.openOcdConfigs": [
     "interface/ftdi/esp_ftdi.cfg",
     "target/esp32s2.cfg"
@@ -44,7 +44,7 @@
     "stdbool.h": "c"
   },
   "idf.flashType": "UART",
-  "idf.port": "/dev/tty.wchusbserial5A840156331",
+  "idf.port": "/dev/tty.wchusbserial5AB90077151",
   "idf.espIdfPath": "/Users/code/esp/esp-idf",
   "idf.toolsPath": "/Users/code/.espressif"
 }

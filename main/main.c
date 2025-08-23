@@ -354,7 +354,7 @@ void app_main(void)
     ESP_ERROR_CHECK(steam_valve_module_init());
     ESP_ERROR_CHECK(stepper_motor_module_init());
     ESP_ERROR_CHECK(water_level_sensor_module_init());
-    //ESP_ERROR_CHECK(function_controller_init());
+    ESP_ERROR_CHECK(function_controller_init());
     ESP_ERROR_CHECK(compressor_module_init());
     ESP_ERROR_CHECK(shake_motor_module_init());
     ESP_LOGI(TAG, "Local services are running.");

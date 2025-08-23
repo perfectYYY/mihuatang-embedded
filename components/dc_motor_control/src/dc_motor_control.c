@@ -174,7 +174,7 @@ static esp_err_t motor_set_speed(uint8_t speed_percentage)
     return ESP_OK;
 }
 
-static void motor_stop_action(void)
+void motor_stop_action(void)
 {
     motor_set_direction(MOTOR_DIR_STOP);
     motor_set_speed(0);

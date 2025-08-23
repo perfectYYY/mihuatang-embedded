@@ -2,6 +2,7 @@
 #define RELAY_MODULE_H  
 
 #include "esp_err.h"  
+#include <stdbool.h>
 
 #ifdef __cplusplus  
 extern "C" {  
@@ -20,6 +21,7 @@ extern "C" {
  */  
 esp_err_t relay_module_init(void);  
 void relay_set_state_steam(int8_t state);  
+void relay_set_state_action(bool state);
 
 
 

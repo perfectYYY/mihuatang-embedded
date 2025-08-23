@@ -7,10 +7,9 @@
 #include "uart_service.h"  
 
 // --- 配置宏定义 ---  
-// 在这里修改继电器控制引脚和有效电平  
 #define RELAY_GPIO_NUM          38       // 对应STM32的 COMPRESSOR_RELAY_GPIO  
 #define RELAY_ACTIVE_LEVEL      false   // false 表示低电平有效 (ON = 0V, OFF = 3.3V)  
-#define RELAY_INITIAL_STATE     false   // false 表示初始状态为关闭 (OFF)  
+#define RELAY_INITIAL_STATE     true   // false 表示初始状态为关闭
 
 #define RELAY_COMMAND_PREFIX "relay"  
 
@@ -21,7 +20,7 @@ static bool s_current_state = RELAY_INITIAL_STATE; // 继电器的逻辑状态 (
 
 // --- 功能函数声明 ---  
 void relay_command_handler(const char *command, size_t len);  
-static void relay_set_state_action(bool state);  
+void relay_set_state_action(bool state);  
 static void send_status_update(void);  
 
 
@@ -77,14 +76,14 @@ void relay_command_handler(const char *command, size_t len)
         return;  
     }  
 
-    const char *sub_command = command + strlen(RELAY_COMMAND_PREFIX) + 1; // +1 跳过 ':'  
+    const char *sub_command = command + strlen(RELAY_COMMAND_PREFIX) + 1;
 
     if (strncmp(sub_command, "on", strlen("on")) == 0) {  
-        relay_set_state_action(true);
+        relay_set_state_action(false);
         ESP_LOGI(TAG, "执行继电器开操作");  
     }   
     else if (strncmp(sub_command, "off", strlen("off")) == 0) {  
-        relay_set_state_action(false);  
+        relay_set_state_action(true);  
         ESP_LOGI(TAG, "执行继电器关操作");  
     }  
     else if (strncmp(sub_command, "toggle", strlen("toggle")) == 0) {  
@@ -106,9 +105,8 @@ void relay_command_handler(const char *command, size_t len)
  * @brief 执行设置继电器状态的动作  
  * @param state 逻辑状态: true=ON, false=OFF  
  */  
-static void relay_set_state_action(bool state)  
-{  
-    // 根据有效电平计算最终要输出的GPIO电平  
+void relay_set_state_action(bool state)  
+{   
     // 如果 state is true (ON) and active_level is HIGH (true) -> level = 1  
     // 如果 state is true (ON) and active_level is LOW (false) -> level = 0  
     // 如果 state is false (OFF) and active_level is HIGH (true) -> level = 0  

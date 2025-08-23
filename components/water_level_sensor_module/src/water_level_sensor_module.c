@@ -10,7 +10,7 @@
 #include "command_dispatcher.h"
 #include "uart_service.h"
 
-#define water_level_gpio_num         GPIO_NUM_1   // ADC输入引脚
+#define water_level_gpio_num         GPIO_NUM_1   
 
 // --- 模块内部定义 ---
 static const char *TAG = "WATER_LEVEL_ADC";
